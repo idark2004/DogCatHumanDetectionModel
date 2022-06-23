@@ -8,3 +8,4 @@ The dataset I used for this model is too big so I can't upload but you can combi
 
 # FastApi
 Run this command to deploy api server : uvicorn api:app
+Add /docs to url to display Swagger

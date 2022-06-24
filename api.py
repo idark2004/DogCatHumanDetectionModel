@@ -30,5 +30,9 @@ async def predict_image(file : bytes = File(...)):
     prediction = predict(image)
     return {"Predicted" : prediction[0]}
 
+@app.get('/')
+async def index():
+    return "Hello"
+
 if __name__ == '__main__':
     uvicorn.run(app,host="126.0.0.0", port=6660)

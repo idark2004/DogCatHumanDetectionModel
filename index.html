@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Demo</title>
+</head>
+<body>
+    <h1>AI Application Demo</h1>
+    <p id="predict">
+    </p>
+    <form id="myForm">
+        <input id="file" type="file" name="file">
+        <div id="display_image"></div>
+        <input type="submit">
+    </form>
+    <!-- Styling -->
+    <style>
+        #predict{
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-direction: column;
+            height: 100vh;
+        }
+        input{
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        #display_image{
+            width: 224px;
+            height: 224px;
+            border: 1px solid black;
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
+</body>
+<script>
+    const form = document.getElementById('myForm')
+    const file = document.getElementById('file')
+    const pre = document.getElementById('predict')
+    let url = "localhost:8000" // Change this to your url
+    var up_img = ''
+    var predict
+
+    //Display image
+    file.addEventListener('change', function(){
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+            up_img = reader.result;
+            document.getElementById('display_image').style.backgroundImage = `url(${up_img})`
+        });
+        reader.readAsDataURL(this.files[0])
+    })
+    //Submit handler
+    form.addEventListener('submit', async function (e){
+        e.preventDefault();
+        
+        //Get image from input
+        const formData = new FormData()
+        formData.append('file', file.files[0])
+
+        const response = await fetch( url+'/api/predict',{
+            method : 'POST',
+            body : formData
+        });
+        predict = await response.json()
+        pre.innerText = 'This is a ' + predict.predicted
+    })
+</script>
+</html>

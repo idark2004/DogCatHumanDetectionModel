@@ -6,6 +6,18 @@ from processing import predict, preprocess, read_image
 #fastapi instance
 app = FastAPI()
 
+#CORS config
+origins = [
+    "*"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 #.../api/predict
 @app.post("/api/predict")
 async def predict_image(file : bytes = File(...)):
